@@ -1,0 +1,221 @@
+{
+    "_version": "1.49.0",
+    "sap.app": {
+        "id": "ar.ledesma.fiori.mm.panioles.entregas",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.10.0",
+            "toolsId": "caea1854-27c2-4b85-aef6-0c849772ef46"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/sap/opu/odata/sap/ZPP_PANIOLES_SRV/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            },
+            "dmsService": {
+                "uri": "/catalog/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+              "so_listaprecios-display": {
+                "semanticObject": "zso_panioles",
+                "action": "display",
+                "title": "{{flpTitle}}",
+                "subTitle": "{{flpSubtitle}}",
+                "signature": {
+                  "parameters": {},
+                  "additionalParameters": "allowed"
+                }
+              }
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "sap-icon://product",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "dependencies": {
+            "minUI5Version": "1.115.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.f": {},
+                "sap.suite.ui.generic.template": {},
+                "sap.ui.comp": {},
+                "sap.ui.generic.app": {},
+                "sap.ui.table": {},
+                "sap.ushell": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "ar.ledesma.fiori.mm.panioles.entregas.i18n.i18n"
+                }
+            },
+            "serviceModel": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {}
+            },
+            "dmsService": {
+                "dataSource": "dmsService",
+                "preload": true,
+                "settings": {}
+            },
+            "htmlModel": {
+                "type": "sap.ui.model.json.JSONModel"
+            },
+            "htmlTemplate": {
+                "type": "sap.ui.model.json.JSONModel"
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "async": true,
+                "viewPath": "ar.ledesma.fiori.mm.panioles.entregas.view",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "clearControlAggregation": false
+            },
+            "routes": [
+                {
+                    "name": "login",
+                    "pattern": ":?query:",
+                    "target": [
+                        "TargetLogin"
+                    ]
+                },
+                {
+                    "pattern": "Employee",
+                    "name": "employee",
+                    "target": [
+                        "TargetEmployee"
+                    ]
+                },
+                {
+                    "pattern": "Loan",
+                    "name": "loan",
+                    "target": "TargetLoan"
+                },
+                {
+                    "pattern": "Delivery",
+                    "name": "delivery",
+                    "target": "TargetDelivery"
+                },
+                {
+                    "pattern": "Review",
+                    "name": "review",
+                    "target": "TargetReview"
+                },
+                {
+                    "pattern": "Mode",
+                    "name": "mode",
+                    "target": "TargetMode"
+                }
+            ],
+            "targets": {
+                "TargetLogin": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Login",
+                    "viewName": "Login"
+                },
+                "TargetEmployee": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Employee",
+                    "viewName": "Employee"
+                },
+                "TargetLoan": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Loan",
+                    "viewName": "Loan"
+                },
+                "TargetDelivery": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Delivery",
+                    "viewName": "Delivery"
+                },
+                "TargetReview": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Review",
+                    "viewName": "Review"
+                },
+                "TargetMode": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Mode",
+                    "viewName": "Mode"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "ar.ledesma.fiori.mm.panioles.entregas.view.App",
+            "type": "XML",
+            "async": true,
+            "id": "App"
+        }
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "arledesmafiorimmpaniolesentregas"
+    }
+}

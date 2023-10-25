@@ -1,0 +1,165 @@
+<mvc:View
+    controllerName="ar.ledesma.fiori.mm.panioles.entregas.controller.Mode"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Page id="page">
+        <content>
+
+            <FlexBox
+                alignContent="Start"
+                alignItems="Start"
+                justifyContent="Start"
+                class="sapUiSmallMarginTop"
+            >
+                <ObjectStatus
+                    class="sapUiTinyMarginBeginEnd"
+                    text="{loggedUserModel>/Nombre}"
+                    state="Information"
+                    icon="sap-icon://customer"
+                />
+
+                <ObjectStatus
+                    class="sapUiTinyMarginBegin sapUiLargeMarginEnd"
+                    text="{loggedUserModel>/Paniol}"
+                    state="Information"
+                    icon="sap-icon://customer-and-supplier"
+                />
+
+                <ObjectStatus
+                    class="sapUiLargeMarginBegin"
+                    text="{employeeModel>/Nombre}"
+                    state="Success"
+                    icon="sap-icon://person-placeholder"
+                />
+            </FlexBox>
+            <MessageStrip
+                class="sapUiSmallMarginTop"
+                text="Seleccione modo de operación"
+                showIcon="true"
+                type="Information"
+            />
+
+            <Panel
+                width="auto"
+                class="sapUiSmallMarginTop"
+            >
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Text text="Tipo de movimiento" />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <!-- 
+                <content>
+                    <VBox>
+                        <Input placeholder="Ingrese código de material" />
+                        <HBox>
+                            <Button
+                                class="sapUiSmallMarginEnd"
+                                icon="sap-icon://bar-code"
+                                text="{i18n>but.scan}"
+                            />
+                            <Button
+                                icon="sap-icon://search"
+                                text="{i18n>but.search}"
+                                press="onSearch"
+                            />
+                        </HBox>
+                    </VBox>
+                </content>-->
+                <FlexBox
+                    alignContent="Center"
+                    alignItems="Center"
+                    justifyContent="Center"
+                    class="sapUiTinyMarginTop"
+                >
+                    <VBox>
+                        <GenericTile
+                            class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                            header="GENERAR PRESTAMO"
+              
+                            press="toLoan"
+                            frameType="TwoByHalf"
+                        >
+                            <TileContent
+                                unit="EUR"
+                                footer="Current Quarter"
+                            >
+                                <ImageContent src="sap-icon://begin" />
+                            </TileContent>
+                        </GenericTile>
+                        <GenericTile
+                            class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                            header="ENTREGA DE EQUIPAMIENTO"
+              
+                            press="toLoan"
+                            frameType="TwoByHalf"
+                        >
+                            <TileContent
+                                unit="EUR"
+                                footer="Current Quarter"
+                            >
+                                <ImageContent src="sap-icon://sap-box" />
+                            </TileContent>
+                        </GenericTile>
+                          <GenericTile
+                            class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+                            header="DEVOLUCIONES"
+              
+                            press="toLoan"
+                            frameType="TwoByHalf"
+                        >
+                            <TileContent
+                                unit="EUR"
+                                footer="Current Quarter"
+                            >
+                                <ImageContent src="sap-icon://media-reverse" />
+                            </TileContent>
+                        </GenericTile>
+                        <!-- <Button
+                            icon="sap-icon://begin"
+                            text=""
+                            class="sapUiLargeMargin"
+                            press=""
+                        /> -->
+                        <!-- <Button
+                            icon="sap-icon://sap-box"
+                            text="Entregas"
+                            class="sapUiLargeMargin"
+                            press="toDelivery"
+                        /> -->
+                        <!-- <Button
+                            icon="sap-icon://media-reverse"
+                            text="Devoluciones"
+                            class="sapUiLargeMargin"
+                            press="toReturn"
+                        /> -->
+                    </VBox>
+                </FlexBox>
+            </Panel>
+        </content>
+
+        <footer>
+            <OverflowToolbar id="otbFooter">
+                <Button
+                    text="Atras"
+                    icon="sap-icon://nav-back"
+                    press="toEmployee"
+                />
+                <ToolbarSpacer />
+
+                <Button
+                    tooltip="{i18n>foot.but.review}"
+                    text="{i18n>foot.but.review}"
+                    icon="sap-icon://activities"
+                    press="toReview"
+                    id="button-2"
+                    visible="false"
+                />
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,65 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:tnt="sap.tnt"
+    xmlns:l="sap.ui.layout"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <!-- <Dialog contentHeight="80%" contentWidth="20%"> -->
+    <Dialog>
+        <FlexBox visible="{htmlModel>/takeNewPhotoVisible}">
+            <core:HTML content="{htmlModel>/takeNewPhoto}" />
+        </FlexBox>
+        <Image
+            ariaDetails="detailsActiveImage"
+            src="{htmlModel>/takenPhoto}"
+            visible="{htmlModel>/takenPhotoVisible}"
+            width="100%"
+            height="150%"
+            decorative="false"
+            press="handleImage3Press"
+        />
+        <customHeader>
+            <Bar>
+                <contentMiddle>
+                    <Title text="Materiales" />
+                </contentMiddle>
+                <contentRight>
+                    <Button
+                        text="Cerrar"
+                        press="_onClose"
+                    />
+                </contentRight>
+            </Bar>
+        </customHeader>
+
+        <footer>
+            <Toolbar>
+                <content>
+				<ToolbarSpacer />
+                    <Button
+						type="Emphasized"
+						text="Tomar Foto"
+                        press="_takePhoto"
+						icon="sap-icon://add-photo"
+                        visible="{= !${htmlModel>/retakePhoto}}"
+                    />
+                    <Button
+                        icon="sap-icon://refresh"
+						text="Retomar Foto"
+                        press="_retakePhoto"
+                        visible="{htmlModel>/retakePhoto}"
+                    />
+                    <ToolbarSpacer />
+                    <Button
+						type="Accept"
+                        text="Continuar"
+                        press="_addPhoto"
+                        visible="{htmlModel>/retakePhoto}"
+                    />
+                </content>
+            </Toolbar>
+        </footer>
+    </Dialog>
+</core:FragmentDefinition>

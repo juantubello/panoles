@@ -1,0 +1,42 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:unified="sap.ui.unified"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+>
+	<Dialog
+		id="dialogoComentario"
+		contentWidth="50%"
+		resizable="false"
+		title="Comentario"
+	>
+		<content>
+				<Panel id="detalleTexto">
+				<l:VerticalLayout
+					class="sapUiContentPadding"
+					width="100%"
+				>
+					<Text text="Comentario"/>
+					<TextArea id="idTextArea"
+						growing="false"
+						growingMaxLines="0"
+						maxLength="50"
+						rows="5"
+						width="100%"
+						showExceededText="true"
+						valueLiveUpdate="true"
+					/>
+				</l:VerticalLayout>
+				</Panel>
+			
+		</content>
+		<beginButton>
+			<Button
+				type="Accept"
+				text="Continuar"
+				press="onGuardarCommentario"
+			/>
+		</beginButton>
+	</Dialog>
+</core:FragmentDefinition>

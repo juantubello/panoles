@@ -1,0 +1,67 @@
+<mvc:View
+    controllerName="ar.ledesma.fiori.mm.panioles.entregas.controller.Review"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+>
+    <Page id="page">
+        <content>
+
+            <MessageStrip
+                class="sapUiSmallMarginTop"
+                text="Revise la informacion y agregue los observaciones correspondientes antes de confirmar la entrega"
+                showIcon="true"
+                type="Warning"
+            />
+            <List
+                items="{dataModel>/Materiales}"
+                headerText="{i18n>list.material}"
+                class="sapUiSmallMarginTop"
+            >
+                <InputListItem label="{dataModel>Descripcion}">
+                    <ObjectStatus
+                        text="{dataModel>Cantidad} UN "
+                        state="Information"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginTop"
+                    />
+
+                    <!-- <core:Icon
+                        src="sap-icon://picture"
+                        class="size5 sapUiTinyMarginEnd sapUiTinyMarginTop"
+                        color="{= ${dataModel>Imagen} === true ? '#27A063' : '#BAB9B5' }"
+			
+                    /> -->
+
+                    
+                </InputListItem>
+            </List>
+        </content>
+        <footer>
+            <OverflowToolbar id="otbFooter">
+                <ToolbarSpacer />
+                <Button
+                    tooltip="{i18n>foot.but.employee}"
+                    text="{i18n>foot.but.employee}"
+                    icon="sap-icon://employee"
+                    press="toEmployee"
+                />
+                <Button
+                    tooltip="{i18n>foot.but.material}"
+                    text="{i18n>foot.but.material}"
+                    icon="sap-icon://add-product"
+                    press="toMaterials"
+                />
+                
+                <!-- <Button
+                    type="Reject"
+                    text="Cancelar"
+                >
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow" />
+                    </layoutData>
+                </Button> -->
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

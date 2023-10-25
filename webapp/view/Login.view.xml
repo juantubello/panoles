@@ -1,0 +1,65 @@
+<mvc:View
+	controllerName="ar.ledesma.fiori.mm.panioles.entregas.controller.Login"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+>
+	<Page id="page">
+		<content>
+					<core:HTML id="idHTMLContent" />
+			<MessageStrip
+				class="sapUiSmallMarginTop"
+				text="Para comenzar el procesamiento ingrese número de legajo - almacen"
+				showIcon="true"
+				type="Information"
+				id="msg-info"
+			/>
+		   <VBox
+            alignItems="Center"
+            justifyContent="Center"
+			class="sapUiSmallMarginTop">
+			
+			<f:Form id="formLogin" editable="true">
+				<f:layout>
+					<f:ResponsiveGridLayout  labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
+						emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
+				</f:layout>
+				<f:formContainers>
+					<f:FormContainer id="formContainerId">
+						<f:formElements>
+							<f:FormElement id="formElementLogin" label="Legajo" visible="true">
+								<f:fields>
+									<Input id= "legajoPanolero" value="" liveChange="onSubmit"   maxLength = "9"/>
+								</f:fields>
+							</f:FormElement>
+                            <f:FormElement id="formElementLogin3" label="Centro" visible="true">
+								<f:fields>
+									<Input id= "plantId" value="" editable="false" visible="true"/>
+								</f:fields>
+							</f:FormElement>
+							<f:FormElement id="formElementLogin2" label="Almacen"  visible="true">
+								<ComboBox id="almacenLoginCombo" name="Category"  items="{serviceModel>/getStoreLocations}" visible="true">
+									<core:Item id="item" key="{serviceModel>storeLocation}" text="{serviceModel>storeLocation}" />
+								</ComboBox>
+							</f:FormElement>
+						</f:formElements>
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
+			 </VBox>
+		</content>
+
+		<footer>
+			<OverflowToolbar id="otbFooter">
+				<ToolbarSpacer />
+	
+			<Button id="loginButton" type="Accept" text="Log In" press="onContinuar"/>
+		
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>
+
+

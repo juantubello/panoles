@@ -1,0 +1,124 @@
+<mvc:View
+	controllerName="ar.ledesma.fiori.mm.panioles.entregas.controller.Employee"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+>
+	<Page id="page">
+		<content>
+			<FlexBox
+				alignItems="Start"
+				justifyContent="SpaceBetween"
+				class="sapUiTinyMarginEnd"
+			>
+				<FlexBox
+					alignContent="Start"
+					alignItems="Start"
+					justifyContent="Start"
+					class="sapUiSmallMarginTop"
+				>
+					<ObjectStatus
+						class="sapUiTinyMarginBeginEnd"
+						text="Pañolero: {loggedUserModel>/LegajoShow} {loggedUserModel>/Nombre}"
+						state="Information"
+						icon="sap-icon://customer"
+					/>
+					<ObjectStatus
+						class="sapUiTinyMarginBegin sapUiLargeMarginEnd"
+						text="Centro: {loggedUserModel>/Paniol}"
+						state="Information"
+						icon="sap-icon://customer-and-supplier"
+					/>
+				</FlexBox>
+				<Button
+					type="Reject"
+					icon="sap-icon://visits"
+					iconFirst="true"
+					tooltip="Log Out"
+					width="30%"
+					press="onLogOut"
+				/>
+			</FlexBox>
+			<core:HTML id="idHTMLContent" />
+			<MessageStrip
+				class="sapUiSmallMarginTop"
+				text="Para comenzar el procesamiento ingrese número de empleado solicitante"
+				showIcon="true"
+				type="Information"
+				id="msg-info"
+			/>
+			<!--     <Image id="dmsImage" ariaDetails="detailsActiveImage" src="{requestsModel>/image}"
+					width="500px"
+                    height= "500px"
+					decorative="false"
+					press="handleImage3Press" /> -->
+			<!-- <core:HTML id="idHTMLContent" />
+ -->
+			<!-- <MessageStrip
+                class="sapUiSmallMarginTop"
+                text="El empleado fue encontrado correctamente!! Ya puede continuar con el ingreso de materiales"
+                showIcon="true"
+                type="Success"
+                visible="false"
+                id='msg-success'
+            /> -->
+			<Panel
+				width="auto"
+				class="sapUiSmallMarginTop"
+			>
+				<headerToolbar>
+					<OverflowToolbar>
+						<!-- <core:Icon
+                            src="sap-icon://employee"
+                            class="size2"
+                            color="#1C4C98"
+                        >
+                            <core:layoutData>
+                                <FlexItemData growFactor="1" />
+                            </core:layoutData>
+                        </core:Icon> -->
+						<Text text="{i18n>foot.but.employee}" />
+					</OverflowToolbar>
+				</headerToolbar>
+				<content>
+					<VBox>
+						<Input
+							id="inputEmployee"
+							placeholder="Ingrese número de empleado"
+							submit="onSearch"
+							maxLength="9"
+							liveChange="onLiveChange"
+						/>
+						<HBox>
+							<!-- <Button
+                                class="sapUiSmallMarginEnd"
+                                icon="sap-icon://bar-code"
+                                text="{i18n>but.scan}"
+                            /> -->
+							<Button
+								icon="sap-icon://search"
+								text="{i18n>but.search}"
+								press="onSearch"
+							/>
+						</HBox>
+					</VBox>
+				</content>
+			</Panel>
+		</content>
+		<footer>
+			<OverflowToolbar id="otbFooter">
+				<ToolbarSpacer />
+				<Button
+					visible="false"
+					tooltip="{i18n>foot.but.material}"
+					text="{i18n>foot.but.material}"
+					icon="sap-icon://add-product"
+					press="toMaterials"
+					id="button-1"
+				/>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

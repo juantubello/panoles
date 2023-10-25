@@ -1,0 +1,638 @@
+<mvc:View
+	controllerName="ar.ledesma.fiori.mm.panioles.entregas.controller.Loan"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+>
+	<Page id="page">
+		<content>
+			<FlexBox
+				alignItems="Start"
+				justifyContent="SpaceBetween"
+				class="sapUiTinyMarginEnd"
+			>
+				<FlexBox
+					alignContent="Start"
+					alignItems="Start"
+					justifyContent="Start"
+					class="sapUiSmallMarginTop"
+				>
+					<!-- <GenericTile 
+					             header="AGDANDULFO"
+					             subheader="Adriel Gandulfo"
+					             
+					             scope="Display"
+					             mode="LineMode"
+					             press="press"
+					             sizeBehavior="{/sizeBehavior}"
+								 class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+						<TileContent footer="{footer}">
+							<NumericContent withMargin="false"
+							                value="{kpivalue}"
+							                valueColor="{color}"
+							                indicator="{trend}"
+							                scale="{scale}"/>
+						</TileContent>
+					</GenericTile> -->
+					<ObjectStatus
+						class="sapUiTinyMarginBeginEnd"
+						text="Pañolero: {loggedUserModel>/LegajoShow} {loggedUserModel>/Nombre}"
+						state="Information"
+						icon="sap-icon://customer"
+					/>
+					<ObjectStatus
+						class="sapUiTinyMarginBegin sapUiLargeMarginEnd"
+						text="Centro: {loggedUserModel>/Paniol}"
+						state="Information"
+						visible="false"
+						icon="sap-icon://customer-and-supplier"
+					/>
+					<ObjectStatus
+						class="sapUiLargeMarginBegin"
+						text="{employeeModel>/Nombre}"
+						state="Success"
+						icon="sap-icon://person-placeholder"
+					/>
+				</FlexBox>
+				<Button
+					type="Reject"
+					icon="sap-icon://visits"
+					iconFirst="true"
+					tooltip="Log Out"
+					width="30%"
+					press="onLogOut"
+				/>
+			</FlexBox>
+			<!-- <MessageStrip
+                class="sapUiSmallMarginTop"
+                text="Ingrese el código de los materiales requeridos, su cantidad y una foto en caso de ser necesaria"
+                showIcon="true"
+                type="Warning"
+            /> -->
+			<!-- <FlexBox
+                alignContent="Center"
+                alignItems="Center"
+                justifyContent="Center"
+           
+            >
+                <MenuButton
+                    text="PRESTAMO"
+                    buttonMode="Split"
+                    type="Accept"
+                    defaultAction="onDefaultActionAccept"
+                    beforeMenuOpen="onBeforeMenuOpen"
+                    useDefaultActionOnly="true"
+                >
+                    <menu>
+                        <Menu itemSelected="onMenuAction">
+                            <MenuItem
+                                text="PRESTAMO"
+                                icon="sap-icon://begin"
+                            />
+                            <MenuItem
+                                text="ENTREGA"
+                                icon="sap-icon://sap-box"
+                            />
+                            <MenuItem
+                                text="DEVOLUCION"
+                                icon="sap-icon://media-reverse"
+                            />
+                        </Menu>
+                    </menu>
+                </MenuButton>
+            </FlexBox> -->
+			<IconTabBar
+				id="iconTabBar7"
+				class="sapUiResponsiveContentPadding sapUiSmallMarginTop"
+				tabsOverflowMode="StartAndEnd"
+				expanded="true"
+				expandable="false"
+				select="onChangeOperacion"
+			>
+				<items>
+					<IconTabFilter
+						icon="sap-icon://begin"
+						text="Prestamos"
+						key="Prestamos"
+					>
+						<Panel
+							width="auto"
+							class="sapUiSmallMargin"
+						>
+							<headerToolbar>
+								<OverflowToolbar>
+									<!-- <core:Icon
+                            src="sap-icon://product"
+                            class="size2 "
+                            color="#1C4C98"
+                        >
+                            <core:layoutData>
+                                <FlexItemData growFactor="1" />
+                            </core:layoutData>
+                        </core:Icon> -->
+									<Text text="{i18n>panel.material.code}" />
+								</OverflowToolbar>
+							</headerToolbar>
+							<content>
+								<VBox>
+									<Input
+										id="inputMaterialPrestamos"
+										placeholder="Ingrese código de material"
+										submit="onAdd"
+										maxLength="19"
+										liveChange="onLiveChange"
+									/>
+									<HBox>
+										<!-- <Button
+                                class="sapUiSmallMarginEnd"
+                                icon="sap-icon://bar-code"
+                                text="{i18n>but.scan}"
+                            /> -->
+										<!-- <Button
+                                icon="sap-icon://search"
+                                text="{i18n>but.search}"
+                                press="onSearch"
+                            /> -->
+									</HBox>
+								</VBox>
+							</content>
+						</Panel>
+						<List
+							id="listPrestamos"
+							headerText="Elementos"
+							items="{dataModel>/Materiales}"
+							visible="false"
+						>
+							<CustomListItem>
+								<VBox>
+									<FlexBox>
+										<Image
+											src="{dataModel>URL}"
+											width="5em"
+											height="4em"
+											class="sapUiSmallMargin"
+											visible="{dataModel>Imagen}"
+										/>
+										<core:Icon
+											visible="{= ${dataModel>Imagen} === false ? true : false }"
+											size="3.7em"
+											src="sap-icon://attachment-photo"
+											class="sapUiSmallMargin"
+										/>
+										<ObjectIdentifier
+											id="materialCreate"
+											title="{dataModel>Codigo}"
+											text="{dataModel>Descripcion}"
+											class="sapUiSmallMargin"
+											width="5px"
+										/>
+										<!-- <Input
+                                value="{dataModel>Cantidad}"
+                                width="5rem"
+                                class="sapUiSmallMargin"
+                            /> -->
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+									>
+										<Text
+											text="Cantidad"
+											class="sapUiTinyMarginEnd"
+										/>
+										<StepInput
+											id="stepInput22"
+											value="{dataModel>cantidad}"
+											displayValuePrecision="0"
+											textAlign="Center"
+											min="1"
+										/>
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+									>
+										<Button
+											type="{= ${dataModel>Imagen} === true ? 'Success' : 'Default' }"
+											icon="sap-icon://camera"
+											class="sapUiTinyMargin"
+											text="Imagen"
+											press="onUploadPhoto"
+										/>
+										<Button
+											type="{= ${dataModel>Comment} === true ? 'Success' : 'Default' }"
+											icon="sap-icon://comment"
+											class="sapUiTinyMargin"
+											text="Comentario"
+											press="onComment($event,'D')"
+										/>
+										<Button
+											type="Negative"
+											icon="sap-icon://delete"
+											class="sapUiTinyMargin"
+											text="Borrar"
+											press="onDelete"
+										/>
+									</FlexBox>
+								</VBox>
+							</CustomListItem>
+						</List>
+					</IconTabFilter>
+					<IconTabSeparator icon="" />
+					<IconTabFilter
+						icon="sap-icon://sap-box"
+						text="Entregas L.P."
+						key="Entregas"
+					>
+						<Panel
+							width="auto"
+							class="sapUiSmallMargin"
+						>
+							<headerToolbar>
+								<OverflowToolbar>
+									<!-- <core:Icon
+                            src="sap-icon://product"
+                            class="size2 "
+                            color="#1C4C98"
+                        >
+                            <core:layoutData>
+                                <FlexItemData growFactor="1" />
+                            </core:layoutData>
+                        </core:Icon> -->
+									<Text text="{i18n>panel.material.code}" />
+								</OverflowToolbar>
+							</headerToolbar>
+							<content>
+								<VBox>
+									<Input
+										placeholder="Ingrese código de material"
+										id="inputMaterialEntregas"
+										submit="onAdd"
+										maxLength="19"
+										liveChange="onLiveChange"
+									/>
+									<HBox>
+										<!-- <Button
+                                class="sapUiSmallMarginEnd"
+                                icon="sap-icon://bar-code"
+                                text="{i18n>but.scan}"
+                            /> -->
+										<!-- <Button
+                                icon="sap-icon://search"
+                                text="{i18n>but.search}"
+                                press="onSearch"
+                            /> -->
+									</HBox>
+								</VBox>
+							</content>
+						</Panel>
+						<List
+							id="listEntregas"
+							headerText="Elementos"
+							items="{dataModel>/Materiales}"
+							visible="false"
+						>
+							<CustomListItem>
+								<VBox>
+									<FlexBox>
+										<Image
+											src="{dataModel>URL}"
+											width="5em"
+											height="4em"
+											class="sapUiSmallMargin"
+											visible="{dataModel>Imagen}"
+										/>
+										<core:Icon
+											visible="{= ${dataModel>Imagen} === false ? true : false }"
+											size="3.7em"
+											src="sap-icon://attachment-photo"
+											class="sapUiSmallMargin"
+										/>
+										<ObjectIdentifier
+											id="materialCreate1"
+											title="{dataModel>Codigo}"
+											text="{dataModel>Descripcion}"
+											class="sapUiSmallMargin"
+											width="5px"
+										/>
+										<!-- <Input
+                                value="{dataModel>Cantidad}"
+                                width="5rem"
+                                class="sapUiSmallMargin"
+                            /> -->
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+									>
+										<Text
+											text="Cantidad"
+											class="sapUiTinyMarginEnd"
+										/>
+										<StepInput
+											id="stepInput33"
+											value="{dataModel>cantidad}"
+											displayValuePrecision="0"
+											textAlign="Center"
+											min="1"
+										/>
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+									>
+										<Button
+											type="{= ${dataModel>Imagen} === true ? 'Success' : 'Default' }"
+											icon="sap-icon://camera"
+											class="sapUiTinyMargin"
+											text="Imagen"
+											press="onUploadPhoto"
+										/>
+										<Button
+											type="{= ${dataModel>Comment} === true ? 'Success' : 'Default' }"
+											icon="sap-icon://comment"
+											class="sapUiTinyMargin"
+											text="Comentario"
+											press="onComment($event,'D')"
+										/>
+										<Button
+											type="Negative"
+											icon="sap-icon://delete"
+											class="sapUiTinyMargin"
+											text="Borrar"
+											press="onDelete"
+										/>
+									</FlexBox>
+								</VBox>
+							</CustomListItem>
+						</List>
+					</IconTabFilter>
+					<IconTabSeparator icon="" />
+					<IconTabFilter
+						icon="sap-icon://media-reverse"
+						text="Dev. C.P."
+						key="DevolucionesCP"
+						id="devoluciones"
+					>
+						<List
+							id="demo-list2"
+							headerText="Elementos"
+							items="{returnsModel>/Materiales}"
+							visible="true"
+						>
+							<CustomListItem>
+								<VBox>
+									<FlexBox>
+										<Image
+											src="{returnsModel>URL}"
+											width="3em"
+											class="sapUiSmallMargin"
+											press="onPressImage"
+										/>
+										<!-- <core:Icon
+                                            visible="{= ${returnsModel>Imagen} === false ? true : false }"
+                                            size="3.7em"
+                                            src="sap-icon://attachment-photo"
+                                            class="sapUiSmallMargin"
+                                        /> -->
+										<ObjectIdentifier
+											title="{returnsModel>Codigo} - {returnsModel>Cantidad} unidad/unidades entregadas"
+											text="{returnsModel>Descripcion}"
+											class="sapUiSmallMargin"
+											width="5px"
+										/>
+										<!-- <Input
+                                value="{returnsModel>Cantidad}"
+                                width="5rem"
+                                class="sapUiSmallMargin"
+                            /> -->
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+										visible="{= ${returnsModel>Return} === true ? false : true }"
+									>
+										<MessageStrip
+											text="El elemento no se incluye en la devolución"
+											type="Warning"
+											showIcon="true"
+										/>
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+										visible="{returnsModel>Return}"
+									>
+										<!-- <Text
+                                            text="Motivo"
+                                            class="sapUiTinyMarginEnd"
+                                        /> -->
+										<ComboBox showSecondaryValues="true" selectionChange="onSelectionChange"
+											placeholder="SELECCIONE MOTIVO" id="reasonsCP" name="Category"  items="{path:'serviceModel>/getReasons',  templateShareable:true}"  >
+									<core:Item id="itemCP" key="{serviceModel>reasonCode}" text="{serviceModel>description}" />
+							
+										</ComboBox>
+										<Button
+											type="{= ${returnsModel>Comment} === true ? 'Success' : 'Default' }"
+											icon="sap-icon://comment"
+											class="sapUiTinyMargin"
+											text="Comentario"
+												press="onComment($event,'R')"
+										/>
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+									>
+										<!-- <Text
+                                            text="Cantidad"
+                                            class="sapUiTinyMarginEnd"
+                                        /> -->
+										<StepInput
+											width="87%"
+											validationMode="LiveChange"
+											change="validateInputs"
+											value="{returnsModel>CantidadDevuelta}"
+											displayValuePrecision="0"
+											max="{returnsModel>Cantidad}"
+											min="1"
+											textAlign="Center"
+											valueStateText="La cantidad recibida no coincide con la entregada"
+											visible="{returnsModel>Return}"
+										/>
+										<CheckBox
+											selected="{returnsModel>Return}"
+											text="RECIBIDO"
+										/>
+									</FlexBox>
+									<!-- <FlexBox
+                                        alignContent="Center"
+                                        alignItems="Center"
+                                        justifyContent="Center"
+                                    >
+                                        <Button
+                                            type="{= ${returnsModel>Imagen} === true ? 'Success' : 'Default' }"
+                                            icon="sap-icon://camera"
+                                            class="sapUiTinyMargin"
+                                            text="Imagen"
+                                            press="onUploadPhoto"
+                                        />
+
+                                        <Button
+                                            type="{= ${returnsModel>Comentario} === true ? 'Success' : 'Default' }"
+                                            icon="sap-icon://comment"
+                                            class="sapUiTinyMargin"
+                                            text="Comentario"
+                                            press="onComment"
+                                        />
+                                        <Button
+                                            type="Negative"
+                                            icon="sap-icon://delete"
+                                            class="sapUiTinyMargin"
+                                            text="Borrar"
+                                        />
+                                    </FlexBox> -->
+								</VBox>
+							</CustomListItem>
+						</List>
+					</IconTabFilter>
+					<IconTabSeparator icon="" />
+					<IconTabFilter
+						icon="sap-icon://media-rewind"
+						text="Dev. L.P."
+						key="DevolucionesLP"
+						id="devolucionesLP"
+					>
+						<List
+							id="demo-list22"
+							headerText="Elementos"
+							items="{returnsModel>/Materiales}"
+							visible="true"
+						>
+							<CustomListItem>
+								<VBox>
+									<FlexBox>
+										<Image
+											src="{returnsModel>URL}"
+											width="3em"
+											class="sapUiSmallMargin"
+											press="onPressImage"
+										/>
+										<!-- <core:Icon
+                                            visible="{= ${returnsModel>Imagen} === false ? true : false }"
+                                            size="3.7em"
+                                            src="sap-icon://attachment-photo"
+                                            class="sapUiSmallMargin"
+                                        /> -->
+										<ObjectIdentifier
+											title="{returnsModel>Codigo} - {returnsModel>Cantidad} unidad/unidades entregadas"
+											text="{returnsModel>Descripcion}"
+											class="sapUiSmallMargin"
+											width="5px"
+										/>
+										<!-- <Input
+                                value="{returnsModel>Cantidad}"
+                                width="5rem"
+                                class="sapUiSmallMargin"
+                            /> -->
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+										visible="{= ${returnsModel>Return} === true ? false : true }"
+									>
+										<MessageStrip
+											text="El elemento no se incluye en la devolución"
+											type="Warning"
+											showIcon="true"
+										/>
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+										visible="{returnsModel>Return}"
+									>
+										<!-- <Text
+                                            text="Motivo"
+                                            class="sapUiTinyMarginEnd"
+                                        /> -->
+								
+										<ComboBox showSecondaryValues="true"
+										
+											placeholder="SELECCIONE MOTIVO" id="reasonsLP" name="Category"  items="{path:'serviceModel>/getReasons',  templateShareable:true}" >
+									<core:Item  id="itemLP" key="{serviceModel>reasonCode}" text="{serviceModel>description}" />
+							
+										</ComboBox>
+										<Button
+											type="{= ${returnsModel>Comment} === true ? 'Success' : 'Default' }"
+											icon="sap-icon://comment"
+											class="sapUiTinyMargin"
+											text="Comentario"
+												press="onComment($event,'R')"
+										/>
+									</FlexBox>
+									<FlexBox
+										alignContent="Center"
+										alignItems="Center"
+										justifyContent="Center"
+									>
+										<!-- <Text
+                                            text="Cantidad"
+                                            class="sapUiTinyMarginEnd"
+                                        /> -->
+										<StepInput
+											width="87%"
+											validationMode="LiveChange"
+											change="validateInputs"
+											value="{returnsModel>CantidadDevuelta}"
+											displayValuePrecision="0"
+											max="{returnsModel>Cantidad}"
+											min="1"
+											textAlign="Center"
+											valueStateText="La cantidad recibida no coincide con la entregada"
+											visible="{returnsModel>Return}"
+										/>
+										<CheckBox
+											selected="{returnsModel>Return}"
+											text="RECIBIDO"
+										/>
+									</FlexBox>
+								</VBox>
+							</CustomListItem>
+						</List>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</content>
+		<footer>
+			<OverflowToolbar id="otbFooter">
+				<Button
+					text="Atras"
+					icon="sap-icon://nav-back"
+					press="toEmployee"
+				/>
+				<ToolbarSpacer />
+				<Button
+					type="Accept"
+					text="Confirmar"
+					press="onConfirmar"
+				>
+					<layoutData>
+						<OverflowToolbarLayoutData priority="NeverOverflow" />
+					</layoutData>
+				</Button>
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>
