@@ -48,15 +48,15 @@ sap.ui.define([
 
                     var oView = this.getView();
 
-                   
-                    
+
+
                     if (that.getView().getParent().getPreviousPage() === undefined) {
-                      let initRouter = sap.ui.core.UIComponent.getRouterFor(that);
-                      
-                        
-                     initRouter.navTo("login");
-                       
-                    }
+                        let initRouter = sap.ui.core.UIComponent.getRouterFor(that);
+
+
+                        initRouter.navTo("login");
+
+                    }
                 }, this);
 
 
@@ -105,8 +105,14 @@ sap.ui.define([
 
                     console.log(oMaterial);
                     BusyIndicator.hide(0);
-                    if (oMaterial.type === "") {
-                        sap.m.MessageToast.show("Material Inexistente");
+                    if (oMaterial.noMara === "X") {
+                        // sap.m.MessageToast.show("Material Inexistente");
+                        MessageBox.error("Material inexistente");
+                        return;
+                    }else
+                        if (oMaterial.type === "") {
+                        // sap.m.MessageToast.show("Material Inexistente");
+                        MessageBox.error("Material no configurado");
                         return;
                     }
                     if (oMaterial.type === sTipo || (this._operation === "Prestamos" && oMaterial.type === 'SSR')) {
@@ -125,7 +131,8 @@ sap.ui.define([
                         oModel.getProperty("/Materiales").push(Object.assign({}, jsonModel));
                         oModel.refresh();
                     } else {
-                        sap.m.MessageToast.show("Tipo de material no permitido en esta pestaña");
+                        MessageBox.error("Tipo de material no permitido en esta pestaña");
+                        //  sap.m.MessageToast.show("Tipo de material no permitido en esta pestaña");
                     }
 
 
@@ -133,6 +140,13 @@ sap.ui.define([
 
 
 
+            },
+
+            onChangeInput: function (oEvent) {
+                debugger;
+                if (oEvent.getParameter("value") > 1000) {
+                   
+                }
             },
 
             clearPantalla: function () {
@@ -235,7 +249,21 @@ sap.ui.define([
 
                 return new Promise(async (resolve, reject) => {
                     // Simula una operación asíncrona, como una solicitud HTTP o una tarea demorada
-                    var path = 'root/' + elemento.pendingToDocument.results[0].documentNumber + elemento.pendingToDocument.results[0].year;
+                    var indexDoc = "X";
+                    elemento.pendingToDocument.results.some(function (value, index) {
+                        if (value.imagen === "X") {
+                            indexDoc = index;
+                        }
+
+                    });
+                    debugger;
+
+                    if (indexDoc !== "X") {
+                        var path = 'root/' + elemento.pendingToDocument.results[indexDoc].documentNumber + elemento.pendingToDocument.results[indexDoc].year;
+                    } else {
+                        var path = 'root/' + elemento.pendingToDocument.results[0].documentNumber + elemento.pendingToDocument.results[0].year;
+                    }
+
 
                     jsonModel.Descripcion = elemento.description;
                     jsonModel.Codigo = elemento.material;
@@ -245,19 +273,26 @@ sap.ui.define([
                     jsonModel.CantidadDevuelta = "1"
 
                     jsonModel.Return = false;
-                   
-                    
-                    try {   
-                        var response = await that.oDMS.getImage(elemento.material, path);
-                        jsonModel.URL = response.results[0].image;
-                        resolve();
 
-                    } catch (error) {
-                        reject();
+                    if (indexDoc !== "X") {
+                        try {
+                            var response = await that.oDMS.getImage(elemento.material, path);
+                            jsonModel.URL = response.results[0].image;
+                            resolve();
+
+                        } catch (error) {
+                            reject();
+                        }
+                    } else {
+                        resolve();
                     }
 
                     oModel.getProperty("/Materiales").push(Object.assign({}, jsonModel));
-                   
+
+
+
+
+
                 });
             },
 
@@ -269,7 +304,7 @@ sap.ui.define([
 
 
                 return new Promise(async (resolve, reject) => {
-                    
+
                     try {
                         that.getOwnerComponent().getModel("serviceModel").read("/getPendings", {
                             filters: aFilters,
@@ -294,7 +329,7 @@ sap.ui.define([
 
 
                 return new Promise(async (resolve, reject) => {
-                    
+
                     try {
                         that.getOwnerComponent().getModel("serviceModel").read("/getMaterials('" + sMaterial + "')", {
                             success: function (oData) {
@@ -311,7 +346,7 @@ sap.ui.define([
             },
             onDelete: function (oEvent) {
 
-                
+
                 var sPath = oEvent.getSource().getBindingContext("dataModel").sPath
                 const selectedIndex = sPath.slice(-1)[0];
 
@@ -330,165 +365,186 @@ sap.ui.define([
                 var aHeaderToItem = [];
                 var jsonHeaderToItem = {};
                 var jsonDatos = {};
+                var error = 0;
 
                 var oItemsDevolucion = this.getOwnerComponent().getModel("returnsModel");
                 var oItems = this.getOwnerComponent().getModel("dataModel");
 
-                MessageBox.information("¿Desea confirmar el documento?", {
-                    actions: ["Aceptar", "Cancelar"],
-                    emphasizedAction: "Aceptar",
-                    onClose: async function (sAction) {
-                        if ( sAction === 'Aceptar' ) {
-                            if (oItemsDevolucion.oData.Materiales.length > 0 || oItems.oData.Materiales.length > 0) {
+                oItems.oData.Materiales.forEach(function (value) {
+                    if (value.cantidad > 1000) {
+                        error = 1;
 
-                                switch (that._operation) {
-            
-            
-                                    case "DevolucionesCP":
-                                    case "DevolucionesLP":
-            
-            
-            
-            
-                                        aHeaderToItem = [];
-                                        jsonHeaderToItem = {};
-                                        jsonDatos = {};
-            
-            
-                                        jsonDatos.documentNumber = "";
-                                        jsonDatos.documentYear = "";
-                                        jsonDatos.storeKeeper = oLoginModel.oData.userId;
-                                        jsonDatos.statusDoc = "";
-            
-                                        oItemsDevolucion.oData.Materiales.forEach(function (value) {
-                                            if (value.Return) {
-            
+                    }
+                });
+
+                if (error !== 1) {
+
+
+                    MessageBox.information("¿Desea confirmar el documento?", {
+                        actions: ["Aceptar", "Cancelar"],
+                        emphasizedAction: "Aceptar",
+                        onClose: async function (sAction) {
+                            if (sAction === 'Aceptar') {
+                                if (oItemsDevolucion.oData.Materiales.length > 0 || oItems.oData.Materiales.length > 0) {
+
+                                    switch (that._operation) {
+
+
+                                        case "DevolucionesCP":
+                                        case "DevolucionesLP":
+
+
+
+
+                                            aHeaderToItem = [];
+                                            jsonHeaderToItem = {};
+                                            jsonDatos = {};
+
+
+                                            jsonDatos.documentNumber = "";
+                                            jsonDatos.documentYear = "";
+                                            jsonDatos.storeKeeper = oLoginModel.oData.userId;
+                                            jsonDatos.statusDoc = "";
+
+                                            oItemsDevolucion.oData.Materiales.forEach(function (value) {
+                                                if (value.Return) {
+
+                                                    jsonHeaderToItem.documentNumber = "";
+                                                    jsonHeaderToItem.material = value.Codigo;
+                                                    jsonHeaderToItem.plant = oLoginModel.oData.plant;
+                                                    jsonHeaderToItem.stageLoc = oLoginModel.oData.storeLocation;
+                                                    jsonHeaderToItem.entryQnt = value.CantidadDevuelta.toString();;
+                                                    jsonHeaderToItem.unloadPt = oEmployeeModel.oData.employee;
+                                                    jsonHeaderToItem.costCenter = oEmployeeModel.oData.costCenter;
+                                                    jsonHeaderToItem.grRcpt = value.type;
+                                                    jsonHeaderToItem.itemText = value.Comentario;
+                                                    jsonHeaderToItem.itemToDocument = value.pendingToDocument.results;
+                                                    jsonHeaderToItem.moveReas = value.MoveReas;
+
+                                                    aHeaderToItem.push(Object.assign({}, jsonHeaderToItem));
+                                                }
+
+                                            });
+
+
+                                            break;
+                                        case "Prestamos":
+                                        case "Entregas":
+
+
+
+
+                                            aHeaderToItem = [];
+                                            jsonHeaderToItem = {};
+                                            jsonDatos = {};
+
+
+                                            jsonDatos.documentNumber = "";
+                                            jsonDatos.documentYear = "";
+                                            jsonDatos.storeKeeper = oLoginModel.oData.userId;
+                                            jsonDatos.statusDoc = "";
+
+                                            oItems.oData.Materiales.forEach(function (value) {
+
+
                                                 jsonHeaderToItem.documentNumber = "";
                                                 jsonHeaderToItem.material = value.Codigo;
                                                 jsonHeaderToItem.plant = oLoginModel.oData.plant;
                                                 jsonHeaderToItem.stageLoc = oLoginModel.oData.storeLocation;
-                                                jsonHeaderToItem.entryQnt = value.CantidadDevuelta.toString();;
+                                                jsonHeaderToItem.entryQnt = value.cantidad.toString();;
                                                 jsonHeaderToItem.unloadPt = oEmployeeModel.oData.employee;
                                                 jsonHeaderToItem.costCenter = oEmployeeModel.oData.costCenter;
                                                 jsonHeaderToItem.grRcpt = value.type;
                                                 jsonHeaderToItem.itemText = value.Comentario;
-                                                jsonHeaderToItem.itemToDocument = value.pendingToDocument.results;
-                                                jsonHeaderToItem.moveReas = value.MoveReas;
-            
-                                                aHeaderToItem.push(Object.assign({}, jsonHeaderToItem));
-                                            }
-            
-                                        });
-            
-            
-                                        break;
-                                    case "Prestamos":
-                                    case "Entregas":
-            
-            
-            
-            
-                                        aHeaderToItem = [];
-                                        jsonHeaderToItem = {};
-                                        jsonDatos = {};
-            
-            
-                                        jsonDatos.documentNumber = "";
-                                        jsonDatos.documentYear = "";
-                                        jsonDatos.storeKeeper = oLoginModel.oData.userId;
-                                        jsonDatos.statusDoc = "";
-            
-                                        oItems.oData.Materiales.forEach(function (value) {
-            
-            
-                                            jsonHeaderToItem.documentNumber = "";
-                                            jsonHeaderToItem.material = value.Codigo;
-                                            jsonHeaderToItem.plant = oLoginModel.oData.plant;
-                                            jsonHeaderToItem.stageLoc = oLoginModel.oData.storeLocation;
-                                            jsonHeaderToItem.entryQnt = value.cantidad.toString();;
-                                            jsonHeaderToItem.unloadPt = oEmployeeModel.oData.employee;
-                                            jsonHeaderToItem.costCenter = oEmployeeModel.oData.costCenter;
-                                            jsonHeaderToItem.grRcpt = value.type;
-                                            jsonHeaderToItem.itemText = value.Comentario;
-            
-            
-                                            aHeaderToItem.push(Object.assign({}, jsonHeaderToItem));
-            
-                                            console.log(value);
-                                        });
-            
-            
-                                        break;
-                                }
-            
-                                jsonDatos.headerToItem = aHeaderToItem;
-            
-                                sap.ui.core.BusyIndicator.show(0);
-                                let oResultado = await that.createMaterialDocument(jsonDatos);
-                                debugger;
-                                if (oResultado.statusDoc === 'OK') {
-                                    MessageBox.information("Documento creado: " + oResultado.documentNumber + "-" + oResultado.documentYear, {
-                                        actions: ["Aceptar"],
-                                        emphasizedAction: "Aceptar",
-                                        onClose: async function (sAction) { }
-                                    });
-            
-                                    
-                                    oItems.oData.MaterialesAux = oItems.oData.Materiales
-                                    switch (that._operation) {
-                                        case "DevolucionesCP":
-                                            that.pendings(oEmployeeModel, "PCP")
-                                            break;
-            
-                                        case "DevolucionesLP":
-                                            that.pendings(oEmployeeModel, "PLP")
-                                            break;
-            
-                                        case "Prestamos":
-                                        case "Entregas":
-                                            if (that._tengoURL) {
-            
-                                                try {
-            
-            
-                                                    that.oDMS.createFolder(oResultado.documentNumber + oResultado.documentYear, "root").then((res) => {
-                                                        const folderPath = `${res.path}/${res.folderName}`
-                                                        oItems.oData.MaterialesAux.forEach(function (value) {
-                                                            
-                                                            that.oDMS.uploadImageToFolder(folderPath, value.Codigo, value.URL)
-                                                        });
-                                                        that._tengoURL = false; 
-                                                       // oItems.oData.MaterialesAux = null;
-            
-                                                    })
-                                                } catch (error) {
-                                                    console.log(error);
+                                                if (value.Imagen) {
+                                                    jsonHeaderToItem.imagen = "X";
+                                                } else {
+                                                    jsonHeaderToItem.imagen = "";
                                                 }
-                                            }
-                                          
+
+
+
+                                                aHeaderToItem.push(Object.assign({}, jsonHeaderToItem));
+
+                                                console.log(value);
+                                            });
+
+
                                             break;
-            
                                     }
-            
+
+                                    jsonDatos.headerToItem = aHeaderToItem;
+
+                                    sap.ui.core.BusyIndicator.show(0);
+                                    let oResultado = await that.createMaterialDocument(jsonDatos);
+                                    debugger;
+                                    if (oResultado.statusDoc === 'OK') {
+                                        MessageBox.information("Documento creado: " + oResultado.documentNumber + "-" + oResultado.documentYear, {
+                                            actions: ["Aceptar"],
+                                            emphasizedAction: "Aceptar",
+                                            onClose: async function (sAction) { }
+                                        });
+
+
+                                        oItems.oData.MaterialesAux = oItems.oData.Materiales
+                                        switch (that._operation) {
+                                            case "DevolucionesCP":
+                                                that.pendings(oEmployeeModel, "PCP")
+                                                break;
+
+                                            case "DevolucionesLP":
+                                                that.pendings(oEmployeeModel, "PLP")
+                                                break;
+
+                                            case "Prestamos":
+                                            case "Entregas":
+                                                if (that._tengoURL) {
+
+                                                    try {
+
+
+                                                        that.oDMS.createFolder(oResultado.documentNumber + oResultado.documentYear, "root").then((res) => {
+                                                            const folderPath = `${res.path}/${res.folderName}`
+                                                            oItems.oData.MaterialesAux.forEach(function (value) {
+
+                                                                that.oDMS.uploadImageToFolder(folderPath, value.Codigo, value.URL)
+                                                            });
+                                                            that._tengoURL = false;
+                                                            // oItems.oData.MaterialesAux = null;
+
+                                                        })
+                                                    } catch (error) {
+                                                        console.log(error);
+                                                    }
+                                                }
+
+                                                break;
+
+                                        }
+
+                                    }
+                                    else {
+                                        MessageBox.information(oResultado.statusDoc, {
+                                            actions: ["Aceptar"],
+                                            emphasizedAction: "Aceptar",
+                                            onClose: async function (sAction) { }
+                                        })
+
+                                    }
+
+                                    that.clearPantalla();
+                                } else {
+                                    sap.m.MessageToast.show("Agregue al menos un material");
                                 }
-                                else {
-                                    MessageBox.information(oResultado.statusDoc, {
-                                        actions: ["Aceptar"],
-                                        emphasizedAction: "Aceptar",
-                                        onClose: async function (sAction) { }
-                                    })
-            
-                                }
-            
-                                that.clearPantalla();
-                            } else {
-                                sap.m.MessageToast.show("Agregue al menos un material");
                             }
                         }
-                    }
-                })
-              
-               
+                    })
+
+                } else {
+                    sap.m.MessageToast.show("Se superó valor máximo (1000)");
+                }
+
+
             },
 
             onSelectionChange: function (oEvent) {
@@ -497,7 +553,7 @@ sap.ui.define([
                 var reason = oEvent.getParameters().selectedItem.getKey();
 
                 const selectedIndex = sPath.slice(-1)[0];
-                
+
 
                 var dataModel = this.getOwnerComponent().getModel("returnsModel").getData().Materiales[selectedIndex]
                 dataModel.MoveReas = reason
@@ -581,39 +637,39 @@ sap.ui.define([
                 // // this.getView().setModel(oModel, "view");
 
                 // aMateriales[id].URL = sPath;
-                
+
                 // this.getOwnerComponent().setModel(new JSONModel
                 //     ({
                 //         "Materiales":  aMateriales
                 //     }), "dataModel");
             },
 
-            captureCellphoneCameraImage: async function() {
+            captureCellphoneCameraImage: async function () {
                 const cellphoneCameraVideo = document.getElementById('cellphone-camera');
                 const canvas = document.createElement('canvas');
                 canvas.width = cellphoneCameraVideo.videoWidth;
                 canvas.height = cellphoneCameraVideo.videoHeight;
                 canvas.getContext('2d').drawImage(cellphoneCameraVideo, 0, 0);
                 const imgData = canvas.toDataURL('image/png');
-        
+
                 // Agregar la imagen al DIV (aunque esté oculto visualmente)
                 const imageContainer = document.getElementById('cellphone-image-container');
                 const imgElement = document.createElement('img');
                 imgElement.src = imgData;
                 imageContainer.appendChild(imgElement);
-              },
+            },
 
             startCellphoneCamera: async function () {
                 try {
-                  let cellphoneCameraStream;
-                  const constraints = { video: { facingMode: 'environment' } };
-                  cellphoneCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                  const cellphoneCameraVideo = document.getElementById('cellphone-camera');
-                  cellphoneCameraVideo.srcObject = cellphoneCameraStream;
+                    let cellphoneCameraStream;
+                    const constraints = { video: { facingMode: 'environment' } };
+                    cellphoneCameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+                    const cellphoneCameraVideo = document.getElementById('cellphone-camera');
+                    cellphoneCameraVideo.srcObject = cellphoneCameraStream;
                 } catch (error) {
-                  console.error('Error accessing cellphone camera:', error);
+                    console.error('Error accessing cellphone camera:', error);
                 }
-              },
+            },
 
             onComment: async function (oEvent, TipoEjecucion) {
 
@@ -636,8 +692,8 @@ sap.ui.define([
                 debugger;
                 const selectedIndex = this.sPathComment.slice(-1)[0];
                 var dataModel = this.getOwnerComponent().getModel(this.modelString).getData().Materiales[selectedIndex]
-                
-                 sap.ui.getCore().byId("idTextArea").setValue(dataModel.Comentario);
+
+                sap.ui.getCore().byId("idTextArea").setValue(dataModel.Comentario);
 
                 this.oCommentFragment.open();
             },
@@ -660,7 +716,7 @@ sap.ui.define([
                             oLoggedUser.setProperty("/Id", "");
                             oLoggedUser.refresh()
 
-                           
+
                             var oRouter = that.getOwnerComponent().getRouter();
                             oRouter.navTo("login");
 
@@ -705,9 +761,9 @@ sap.ui.define([
                 const htmlModel = this.getOwnerComponent().getModel("htmlModel").getData();
                 const mainModel = this.getOwnerComponent().getModel("dataModel")
                 var aMateriales = mainModel.getProperty("/Materiales");
-                
+
                 this._tengoURL = true;
-                
+
                 aMateriales[htmlModel.id].URL = htmlModel.takenPhoto;
                 aMateriales[htmlModel.id].Imagen = true
                 mainModel.refresh()
@@ -733,7 +789,7 @@ sap.ui.define([
             _takePhoto: function () {
                 //const scriptElement = document.getElementById('myscript');
                 //const scriptContent = scriptElement.textContent;
-               // eval(scriptContent);
+                // eval(scriptContent);
                 this.captureCellphoneCameraImage();
                 const imageContainer = document.getElementById("cellphone-image-container");
                 const imgElement = imageContainer.querySelector("img");
@@ -773,6 +829,10 @@ sap.ui.define([
                 htmlModel.refresh()
             },
 
+            onCancelarCommentario: function () {
+                this.oCommentFragment.close();
+            },
+
             onGuardarCommentario: function (oEvent) {
 
                 var sPath = this.sPathComment
@@ -784,14 +844,14 @@ sap.ui.define([
 
                 var dataModel = this.getOwnerComponent().getModel(modelString).getData().Materiales[selectedIndex]
                 dataModel.Comentario = comment
-                if ( comment !== '' ) {
+                if (comment !== '') {
                     dataModel.Comment = true;
-                }else{
+                } else {
                     dataModel.Comment = false;
                 }
-                
+
                 this.getOwnerComponent().getModel(modelString).refresh();
-                
+
                 this.oCommentFragment.close();
                 //sap.ui.getCore().byId("idTextArea").setValue("");
 

@@ -107,7 +107,11 @@ sap.ui.define([
             },
             onAfterRendering: function () {
                 // this.getView().byId('input-focus').focus();
+                debugger;
+             
             },
+
+            
 
       
 
@@ -195,7 +199,7 @@ sap.ui.define([
                     sap.m.MessageToast.show("Debe elegir un Almacen");
                 } 
 
-
+              
             },
             onLiveChange: function (oEvent) {
                 this.getView().byId("inputEmployee").setValue(oEvent.mParameters.value = oEvent.mParameters.value.replace(/\*/g, ""));

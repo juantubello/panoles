@@ -12,38 +12,43 @@
 				alignItems="Start"
 				justifyContent="SpaceBetween"
 				class="sapUiTinyMarginEnd"
+			
 			>
 				<FlexBox
 					alignContent="Start"
 					alignItems="Start"
 					justifyContent="Start"
 					class="sapUiSmallMarginTop"
+					
 				>
 					<ObjectStatus
 						class="sapUiTinyMarginBeginEnd"
-						text="Pañolero: {loggedUserModel>/LegajoShow} {loggedUserModel>/Nombre}"
+						text="Pañolero: {loggedUserModel>/Nombre}"
 						state="Information"
 						icon="sap-icon://customer"
 					/>
 					<ObjectStatus
-						class="sapUiTinyMarginBegin sapUiLargeMarginEnd"
+						class="sapUiLargeMarginEnd"
 						text="Centro: {loggedUserModel>/Paniol}"
 						state="Information"
 						icon="sap-icon://customer-and-supplier"
 					/>
 				</FlexBox>
 				<Button
+					id="logOutBtnEmp"
 					type="Reject"
 					icon="sap-icon://visits"
 					iconFirst="true"
-					tooltip="Log Out"
-					width="30%"
+					tooltip="Logout"
+					text="Logout"
+					width="100%"
+					class="size4"
 					press="onLogOut"
 				/>
 			</FlexBox>
 			<core:HTML id="idHTMLContent" />
 			<MessageStrip
-				class="sapUiSmallMarginTop"
+				class="sapUiTinyMarginTop"
 				text="Para comenzar el procesamiento ingrese número de empleado solicitante"
 				showIcon="true"
 				type="Information"
@@ -110,6 +115,7 @@
 		<footer>
 			<OverflowToolbar id="otbFooter">
 				<ToolbarSpacer />
+				<HBox>
 				<Button
 					visible="false"
 					tooltip="{i18n>foot.but.material}"
@@ -118,6 +124,7 @@
 					press="toMaterials"
 					id="button-1"
 				/>
+				</HBox>
 			</OverflowToolbar>
 		</footer>
 	</Page>

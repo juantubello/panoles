@@ -12,6 +12,7 @@
 				alignItems="Start"
 				justifyContent="SpaceBetween"
 				class="sapUiTinyMarginEnd"
+				
 			>
 				<FlexBox
 					alignContent="Start"
@@ -38,7 +39,7 @@
 					</GenericTile> -->
 					<ObjectStatus
 						class="sapUiTinyMarginBeginEnd"
-						text="Pañolero: {loggedUserModel>/LegajoShow} {loggedUserModel>/Nombre}"
+						text="Pañolero: {loggedUserModel>/Nombre}"
 						state="Information"
 						icon="sap-icon://customer"
 					/>
@@ -57,11 +58,13 @@
 					/>
 				</FlexBox>
 				<Button
+				    id="logOutBtnLoan"
 					type="Reject"
 					icon="sap-icon://visits"
 					iconFirst="true"
-					tooltip="Log Out"
-					width="30%"
+					tooltip="Logout"
+					text="Logout"
+					width="100%"
 					press="onLogOut"
 				/>
 			</FlexBox>
@@ -116,6 +119,7 @@
 						icon="sap-icon://begin"
 						text="Prestamos"
 						key="Prestamos"
+						iconColor="Negative"
 					>
 						<Panel
 							width="auto"
@@ -209,6 +213,8 @@
 											displayValuePrecision="0"
 											textAlign="Center"
 											min="1"
+											max="1000"
+											change="onChangeInput"
 										/>
 									</FlexBox>
 									<FlexBox
@@ -247,6 +253,7 @@
 						icon="sap-icon://sap-box"
 						text="Entregas L.P."
 						key="Entregas"
+						iconColor="Negative"
 					>
 						<Panel
 							width="auto"
@@ -340,6 +347,8 @@
 											displayValuePrecision="0"
 											textAlign="Center"
 											min="1"
+											max="1000"
+											change="onChangeInput"
 										/>
 									</FlexBox>
 									<FlexBox
@@ -376,9 +385,11 @@
 					<IconTabSeparator icon="" />
 					<IconTabFilter
 						icon="sap-icon://media-reverse"
-						text="Dev. C.P."
+						text="Devoluciones"
 						key="DevolucionesCP"
 						id="devoluciones"
+						iconColor="Positive"
+
 					>
 						<List
 							id="demo-list2"
@@ -511,6 +522,7 @@
 						text="Dev. L.P."
 						key="DevolucionesLP"
 						id="devolucionesLP"
+						iconColor="Positive"
 					>
 						<List
 							id="demo-list22"
@@ -615,23 +627,27 @@
 				</items>
 			</IconTabBar>
 		</content>
-		<footer>
-			<OverflowToolbar id="otbFooter">
+		<footer> 
+			<OverflowToolbar id="otbFooter" height="45px">
+			<HBox  height="100%">
 				<Button
 					text="Atras"
 					icon="sap-icon://nav-back"
 					press="toEmployee"
+					id="btnBack"
 				/>
+				</HBox>
 				<ToolbarSpacer />
+				<HBox  height="100%">
 				<Button
 					type="Accept"
 					text="Confirmar"
 					press="onConfirmar"
+					id="btnAccept"
+					width="100%"
 				>
-					<layoutData>
-						<OverflowToolbarLayoutData priority="NeverOverflow" />
-					</layoutData>
 				</Button>
+				</HBox>
 			</OverflowToolbar>
 		</footer>
 	</Page>

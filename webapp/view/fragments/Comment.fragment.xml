@@ -12,13 +12,14 @@
 		title="Comentario"
 	>
 		<content>
-				<Panel id="detalleTexto">
+			<Panel id="detalleTexto">
 				<l:VerticalLayout
 					class="sapUiContentPadding"
 					width="100%"
 				>
-					<Text text="Comentario"/>
-					<TextArea id="idTextArea"
+					<Text text="Comentario" />
+					<TextArea
+						id="idTextArea"
 						growing="false"
 						growingMaxLines="0"
 						maxLength="50"
@@ -28,15 +29,19 @@
 						valueLiveUpdate="true"
 					/>
 				</l:VerticalLayout>
-				</Panel>
-			
+			</Panel>
 		</content>
-		<beginButton>
+		<buttons>
+			<Button
+				type="Cancel"
+				text="Cancelar"
+				press="onCancelarCommentario"
+			/>
 			<Button
 				type="Accept"
 				text="Continuar"
 				press="onGuardarCommentario"
 			/>
-		</beginButton>
+		</buttons>
 	</Dialog>
 </core:FragmentDefinition>

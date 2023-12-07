@@ -8,7 +8,7 @@
 >
 	<Page id="page">
 		<content>
-					<core:HTML id="idHTMLContent" />
+			<core:HTML id="idHTMLContent" />
 			<MessageStrip
 				class="sapUiSmallMarginTop"
 				text="Para comenzar el procesamiento ingrese número de legajo - almacen"
@@ -16,50 +16,107 @@
 				type="Information"
 				id="msg-info"
 			/>
-		   <VBox
-            alignItems="Center"
-            justifyContent="Center"
-			class="sapUiSmallMarginTop">
-			
-			<f:Form id="formLogin" editable="true">
-				<f:layout>
-					<f:ResponsiveGridLayout  labelSpanXL="4" labelSpanL="4" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0"
-						emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false"/>
-				</f:layout>
-				<f:formContainers>
-					<f:FormContainer id="formContainerId">
-						<f:formElements>
-							<f:FormElement id="formElementLogin" label="Legajo" visible="true">
-								<f:fields>
-									<Input id= "legajoPanolero" value="" liveChange="onSubmit"   maxLength = "9"/>
-								</f:fields>
-							</f:FormElement>
-                            <f:FormElement id="formElementLogin3" label="Centro" visible="true">
-								<f:fields>
-									<Input id= "plantId" value="" editable="false" visible="true"/>
-								</f:fields>
-							</f:FormElement>
-							<f:FormElement id="formElementLogin2" label="Almacen"  visible="true">
-								<ComboBox id="almacenLoginCombo" name="Category"  items="{serviceModel>/getStoreLocations}" visible="true">
-									<core:Item id="item" key="{serviceModel>storeLocation}" text="{serviceModel>storeLocation}" />
-								</ComboBox>
-							</f:FormElement>
-						</f:formElements>
-					</f:FormContainer>
-				</f:formContainers>
-			</f:Form>
-			 </VBox>
+			<VBox
+				alignItems="Center"
+				justifyContent="Center"
+				class="sapUiSmallMarginTop"
+			>
+				<f:Form
+					id="formLogin"
+					editable="true"
+				>
+					<f:layout>
+						<f:ResponsiveGridLayout
+							labelSpanXL="4"
+							labelSpanL="4"
+							labelSpanM="12"
+							labelSpanS="12"
+							adjustLabelSpan="false"
+							emptySpanXL="0"
+							emptySpanL="0"
+							emptySpanM="0"
+							emptySpanS="0"
+							columnsXL="1"
+							columnsL="1"
+							columnsM="1"
+							singleContainerFullSize="false"
+						/>
+					</f:layout>
+					<f:formContainers>
+						<f:FormContainer id="formContainerId">
+							<f:formElements>
+								<f:FormElement
+									id="formElementLogin"
+									label="Legajo"
+									visible="true"
+								>
+									<f:fields>
+										<Input
+											id="legajoPanolero"
+											value=""
+											liveChange="onSubmit"
+											maxLength="9"
+										/>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement
+									id="formElementLogin3"
+									label="Centro"
+									visible="true"
+								>
+									<f:fields>
+										<Input
+											id="plantId"
+											value=""
+											editable="false"
+											visible="true"
+										/>
+									</f:fields>
+								</f:FormElement>
+								<f:FormElement
+									id="formElementLogin2"
+									label="Almacen"
+									visible="true"
+								>
+									<ComboBox
+										id="almacenLoginCombo"
+										name="Category"
+										items="{serviceModel>/getStoreLocations}"
+										visible="true"
+									>
+										<core:Item
+											id="item"
+											key="{serviceModel>storeLocation}"
+											text="{serviceModel>storeLocation}"
+										/>
+									</ComboBox>
+								</f:FormElement>
+							</f:formElements>
+						</f:FormContainer>
+					</f:formContainers>
+				</f:Form>
+			</VBox>
 		</content>
-
 		<footer>
-			<OverflowToolbar id="otbFooter">
+			<OverflowToolbar
+				id="otbFooter"
+				height="45px"
+			>
 				<ToolbarSpacer />
+				<HBox  height="100%">
+				<Button 
+					id="loginButton"
+					type="Accept"
+					text="Login" 
+					press="onContinuar"
+					width="100%"
+					class="sapUiNoMarginTop sapUiNoMarginBottom"
+				
+				>
 	
-			<Button id="loginButton" type="Accept" text="Log In" press="onContinuar"/>
-		
+				</Button>
+				</HBox>
 			</OverflowToolbar>
 		</footer>
 	</Page>
 </mvc:View>
-
-

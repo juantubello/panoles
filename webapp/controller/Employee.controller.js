@@ -32,8 +32,8 @@ sap.ui.define([
                      
                         
                      initRouter.navTo("login");
-                       
-                    }
+                   
+                    }
                 }, this);
   
 
@@ -76,12 +76,15 @@ sap.ui.define([
                     this.getView().byId("inputEmployee").setValue("");
                     this.getOwnerComponent().getRouter().navTo("loan");
                 } else {
-                    sap.m.MessageToast.show("No se ha encontrado empleado");
+                   // sap.m.MessageToast.show("No se ha encontrado empleado");
+                    MessageBox.error("No se ha encontrado empleado");
                 }
 
             },
             onAfterRendering: function () {
                 // this.getView().byId('input-focus').focus();
+                debugger;
+                document.getElementById(this.byId("logOutBtnEmp").getId()+ '-inner').classList.add("size4")
             },
 
             getEmployee: async function (sEmployee) {
